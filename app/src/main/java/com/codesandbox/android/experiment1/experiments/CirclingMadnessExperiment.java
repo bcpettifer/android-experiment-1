@@ -1,6 +1,5 @@
 package com.codesandbox.android.experiment1.experiments;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -17,10 +16,9 @@ import android.widget.RelativeLayout;
 
 import com.codesandbox.android.experiment1.base.Experiment;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
+ * "Insanity: doing the same thing over and over again and expecting different results." - Einstein
  * Created by jaminja on 01/11/2015.
  */
 public class CirclingMadnessExperiment extends Experiment {
@@ -29,8 +27,10 @@ public class CirclingMadnessExperiment extends Experiment {
             Color.BLACK,
             Color.WHITE
     };
-    private static int BACKGROUND_COLOUR = Color.DKGRAY;
-    private static float OFFSET_MULTIPLIER = 1.1f;
+    private static final int BACKGROUND_COLOUR = Color.DKGRAY;
+    private static final float OFFSET_MULTIPLIER = 1.1f;
+    private static final boolean LOOPY_MODE_ENABLED = false;
+    private Paint mPaint;
 
     @Override
     public String getFriendlyName() {
@@ -46,11 +46,8 @@ public class CirclingMadnessExperiment extends Experiment {
         RelativeLayout layout = new RelativeLayout(activity);
         layout.setClipToPadding(false);
 
-        List<ImageView> circles = createCircles(CIRCLES_COUNT, Math.min(parent.getWidth(), parent.getHeight()), activity, parent);
-
-        for (int i = 0; i < circles.size(); i++) {
-            layout.addView(circles.get(i));
-        }
+        ImageView circles = createCircles(CIRCLES_COUNT, Math.min(parent.getWidth(), parent.getHeight()), activity, parent);
+        layout.addView(circles);
 
         Animation animation;
         animation = new RotateAnimation(0, 360.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -62,42 +59,47 @@ public class CirclingMadnessExperiment extends Experiment {
         parent.addView(layout);
     }
 
-    private List<ImageView> createCircles(int circlesCount, int diameter, Activity activity, ViewGroup parent) {
-        ArrayList<ImageView> circles = new ArrayList<>(circlesCount);
-        int d = diameter;
-
-        int centreX = parent.getWidth() / 2;
-        int centreY = parent.getHeight() / 2;
-
-        for (int i = 0; i < circlesCount; i++) {
-            ImageView imageView = new ImageView(activity);
-            Bitmap circle = createCircleBitmap(COLOURS[i % COLOURS.length], d);
-            imageView.setImageBitmap(circle);
-            imageView.setPadding(5, 5, 5, 5);
-            imageView.setLayoutParams(new ActionBar.LayoutParams(d, d));
-            float xOffset = (i == 0) ? d/2 : (d/2) * OFFSET_MULTIPLIER;
-            float yOffset = (i == 0)? d/2 : (d/2) * OFFSET_MULTIPLIER;
-            imageView.setX(centreX - xOffset);
-            imageView.setY(centreY - yOffset);
-            circles.add(imageView);
-
-            d -= d / circlesCount;
-        }
-        return circles;
-    }
-
-    private Bitmap createCircleBitmap(int colour, int diameter) {
+    private ImageView createCircles(int circlesCount, int diameter, Activity activity, ViewGroup parent) {
+        ImageView imageView = new ImageView(activity);
         final Bitmap circle = Bitmap.createBitmap(diameter, diameter, Bitmap.Config.ARGB_8888);
         final Canvas canvas = new Canvas(circle);
 
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, diameter, diameter);
-        final RectF rectF = new RectF(rect);
+        int d = diameter;
+        int centreX = diameter / 2;
+        int centreY = diameter / 2;
 
-        paint.setAntiAlias(true);
+        for (int i = 0; i < circlesCount; i++) {
+            float xOffset = (i == 0) ? d/2 : (d/2) * OFFSET_MULTIPLIER;
+            float yOffset = (i == 0)? d/2 : (d/2) * OFFSET_MULTIPLIER;
+            int x = Math.max(0, Math.round(centreX - xOffset));
+            int y = Math.max(0, Math.round(centreY - yOffset));
+            if (LOOPY_MODE_ENABLED) {
+                x = 0;
+                y = 0;
+            }
+            drawCircleToCanvas(canvas, COLOURS[i % COLOURS.length], x, y, d);
+            d -= d / circlesCount;
+        }
+        imageView.setImageBitmap(circle);
+        imageView.setX((parent.getWidth() / 2) - centreX);
+        imageView.setY((parent.getHeight()/2) - centreY);
+        return imageView;
+    }
+
+    private void drawCircleToCanvas(Canvas canvas, int colour, int x, int y, int diameter) {
+        Paint paint = getPaint();
+        final Rect rect = new Rect(x, y, x+diameter, y+diameter);
+        final RectF rectF = new RectF(rect);
         paint.setColor(colour);
         canvas.drawOval(rectF, paint);
+    }
 
-        return circle;
+    private Paint getPaint() {
+        if (mPaint != null) {
+            return mPaint;
+        }
+        mPaint = new Paint();
+        mPaint.setAntiAlias(true);
+        return mPaint;
     }
 }

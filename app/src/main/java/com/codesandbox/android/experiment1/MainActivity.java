@@ -15,6 +15,8 @@ import com.codesandbox.android.experiment1.experiments.CirclingMadnessExperiment
 
 public class MainActivity extends AppCompatActivity {
 
+    private Experiment experiment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,10 +28,14 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Experiment ex1 = new CirclingMadnessExperiment();
-                Snackbar.make(view, "Starting experiment: " + ex1.getFriendlyName(), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                ex1.startExperimentFor(MainActivity.this);
+                if (experiment == null) {
+                    experiment = new CirclingMadnessExperiment();
+                    Snackbar.make(view, "Starting experiment: " + experiment.getFriendlyName(), Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    experiment.startExperimentFor(MainActivity.this);
+                } else {
+                    Toast.makeText(MainActivity.this, "I'm afraid I can't do that!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
