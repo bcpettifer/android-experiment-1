@@ -1,12 +1,13 @@
 package com.codesandbox.android.experiment1.experiments;
 
-import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
@@ -31,6 +32,8 @@ public class CirclingMadnessExperiment extends Experiment {
     private static final float OFFSET_MULTIPLIER = 1.1f;
     private static final boolean LOOPY_MODE_ENABLED = false;
     private Paint mPaint;
+    private Animation mRotateAnimation;
+    private RelativeLayout mLayout;
 
     @Override
     public String getFriendlyName() {
@@ -38,29 +41,38 @@ public class CirclingMadnessExperiment extends Experiment {
     }
 
     @Override
-    public void startExperimentFor(Activity activity) {
+    public void startExperimentFor(Context context, ViewGroup viewGroup) {
 
-        final ViewGroup parent = (ViewGroup) activity.findViewById(android.R.id.content);
-        parent.setBackgroundColor(BACKGROUND_COLOUR);
+        viewGroup.setBackgroundColor(BACKGROUND_COLOUR);
 
-        RelativeLayout layout = new RelativeLayout(activity);
-        layout.setClipToPadding(false);
+        mLayout = new RelativeLayout(context);
+        mLayout.setClipToPadding(false);
 
-        ImageView circles = createCircles(CIRCLES_COUNT, Math.min(parent.getWidth(), parent.getHeight()), activity, parent);
-        layout.addView(circles);
+        ImageView circles = createCircles(CIRCLES_COUNT, Math.min(viewGroup.getWidth(), viewGroup.getHeight()), context, viewGroup);
+        mLayout.addView(circles);
 
-        Animation animation;
-        animation = new RotateAnimation(0, 360.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        animation.setDuration(1500);
-        animation.setInterpolator(new LinearInterpolator());
-        animation.setRepeatCount(Animation.INFINITE);
-        layout.setAnimation(animation);
+        mRotateAnimation = new RotateAnimation(0, 360.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        mRotateAnimation.setDuration(1500);
+        mRotateAnimation.setInterpolator(new LinearInterpolator());
+        mRotateAnimation.setRepeatCount(Animation.INFINITE);
+        mLayout.setAnimation(mRotateAnimation);
 
-        parent.addView(layout);
+        viewGroup.addView(mLayout);
     }
 
-    private ImageView createCircles(int circlesCount, int diameter, Activity activity, ViewGroup parent) {
-        ImageView imageView = new ImageView(activity);
+    @Override
+    public void killExperimentFor(ViewGroup viewGroup) {
+        if (mRotateAnimation != null) {
+            mRotateAnimation.cancel();
+        }
+        if (mLayout != null) {
+            mLayout.removeAllViews();
+            viewGroup.removeView(mLayout);
+        }
+    }
+
+    private ImageView createCircles(int circlesCount, int diameter, Context context, View view) {
+        ImageView imageView = new ImageView(context);
         final Bitmap circle = Bitmap.createBitmap(diameter, diameter, Bitmap.Config.ARGB_8888);
         final Canvas canvas = new Canvas(circle);
 
@@ -81,8 +93,8 @@ public class CirclingMadnessExperiment extends Experiment {
             d -= d / circlesCount;
         }
         imageView.setImageBitmap(circle);
-        imageView.setX((parent.getWidth() / 2) - centreX);
-        imageView.setY((parent.getHeight()/2) - centreY);
+        imageView.setX((view.getWidth() / 2) - centreX);
+        imageView.setY((view.getHeight()/2) - centreY);
         return imageView;
     }
 
