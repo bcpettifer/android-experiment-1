@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 experiment = new BounceExperiment();
-                experiment.startExperimentFor(MainActivity.this);
+                experiment.startExperimentFor(MainActivity.this, parent);
             }
         });
         fab2.setSize(FloatingActionButton.SIZE_MINI);

@@ -2,7 +2,7 @@ package com.codesandbox.android.experiment1.experiments;
 
 import android.animation.ObjectAnimator;
 import android.app.ActionBar;
-import android.app.Activity;
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -49,21 +49,20 @@ public class BounceExperiment extends Experiment {
     };
 
     @Override
-    public void startExperimentFor(final Activity activity) {
-        final ViewGroup parent = (ViewGroup) activity.findViewById(android.R.id.content);
-        parent.setBackgroundColor(activity.getResources().getColor(BACKGROUND_COLOR));
+    public void startExperimentFor(final Context context, final ViewGroup viewGroup) {
+        viewGroup.setBackgroundColor(context.getResources().getColor(BACKGROUND_COLOR));
         for (int batchIndex = 0; batchIndex < 20; batchIndex++) {
             final int finalBatchIndex = batchIndex * 2;
-            parent.postDelayed(
+            viewGroup.postDelayed(
                     new Runnable() {
                         @Override
                         public void run() {
-                            final List<ImageView> views = createObjects(finalBatchIndex, activity, parent);
+                            final List<ImageView> views = createObjects(finalBatchIndex, context, viewGroup);
                             for (int starIndex = 0; starIndex < finalBatchIndex; starIndex++) {
                                 ImageView ball = views.get(starIndex);
-                                parent.addView(ball);
-                                throwBallForward(starIndex % 2 == 0, ball, parent);
-                                tossBallUp(ball, parent);
+                                viewGroup.addView(ball);
+                                throwBallForward(starIndex % 2 == 0, ball, viewGroup);
+                                tossBallUp(ball, viewGroup);
                             }
                         }
                     }
@@ -73,13 +72,18 @@ public class BounceExperiment extends Experiment {
 
     }
 
-    private List<ImageView> createObjects(int count, Activity activity, ViewGroup parent) {
+    @Override
+    public void killExperimentFor(ViewGroup viewGroup) {
+        // TODO: Kill experiment somehow.
+    }
+
+    private List<ImageView> createObjects(int count, final Context context, final ViewGroup parent) {
         ArrayList<ImageView> objects = new ArrayList<>(count);
 
         for (int i = 0; i < count; i++) {
-            ImageView object = new ImageView(activity);
+            ImageView object = new ImageView(context);
             int size = getBallSize();
-            Bitmap circle = createCircle(activity.getResources(), size, size);
+            Bitmap circle = createCircle(context.getResources(), size, size);
             object.setImageBitmap(circle);
             object.setLayoutParams(new ActionBar.LayoutParams(size, size));
             object.setX(RANDOM.nextInt(parent.getWidth()));
