@@ -3,7 +3,6 @@ package com.codesandbox.android.experiment1.experiments;
 import android.animation.ObjectAnimator;
 import android.app.ActionBar;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -11,13 +10,14 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.support.v4.content.ContextCompat;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.BounceInterpolator;
 import android.widget.ImageView;
 
 import com.codesandbox.android.experiment1.R;
-import com.codesandbox.android.experiment1.base.Experiment;
+import com.codesandbox.android.experiment1.base.ExperimentBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ import java.util.Random;
  * Adapted from the Novoda Droidcon Booth bounce demo
  * https://github.com/novoda/droidcon-booth
  */
-public class BounceExperiment extends Experiment {
+public class BounceExperiment extends ExperimentBase {
 
     public static final Random RANDOM = new Random();
 
@@ -50,7 +50,7 @@ public class BounceExperiment extends Experiment {
 
     @Override
     public void startExperimentFor(final Context context, final ViewGroup viewGroup) {
-        viewGroup.setBackgroundColor(context.getResources().getColor(BACKGROUND_COLOR));
+        viewGroup.setBackgroundColor(ContextCompat.getColor(context, BACKGROUND_COLOR));
         for (int batchIndex = 0; batchIndex < 20; batchIndex++) {
             final int finalBatchIndex = batchIndex * 2;
             viewGroup.postDelayed(
@@ -77,13 +77,18 @@ public class BounceExperiment extends Experiment {
         // TODO: Kill experiment somehow.
     }
 
+    @Override
+    public String getFriendlyName() {
+        return "Bounce";
+    }
+
     private List<ImageView> createObjects(int count, final Context context, final ViewGroup parent) {
         ArrayList<ImageView> objects = new ArrayList<>(count);
 
         for (int i = 0; i < count; i++) {
             ImageView object = new ImageView(context);
             int size = getBallSize();
-            Bitmap circle = createCircle(context.getResources(), size, size);
+            Bitmap circle = createCircle(context, size, size);
             object.setImageBitmap(circle);
             object.setLayoutParams(new ActionBar.LayoutParams(size, size));
             object.setX(RANDOM.nextInt(parent.getWidth()));
@@ -93,7 +98,7 @@ public class BounceExperiment extends Experiment {
         return objects;
     }
 
-    private Bitmap createCircle(Resources resources, int width, int height) {
+    private Bitmap createCircle(final Context context, int width, int height) {
         final Bitmap output = Bitmap.createBitmap(
                 width, height, Bitmap.Config.ARGB_8888
         );
@@ -106,7 +111,7 @@ public class BounceExperiment extends Experiment {
 
         paint.setAntiAlias(true);
         canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(resources.getColor(COLOR_VARIANTS[color]));
+        paint.setColor(ContextCompat.getColor(context, COLOR_VARIANTS[color]));
         canvas.drawOval(rectF, paint);
 
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));

@@ -15,14 +15,14 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.codesandbox.android.experiment1.base.Experiment;
+import com.codesandbox.android.experiment1.base.ExperimentBase;
 
 
 /**
  * "Insanity: doing the same thing over and over again and expecting different results." - Einstein
  * Created by jaminja on 01/11/2015.
  */
-public class CirclingMadnessExperiment extends Experiment {
+public class CirclingMadnessExperiment extends ExperimentBase {
     private static final int CIRCLES_COUNT = 13;
     private static final int[] COLOURS = {
             Color.BLACK,
@@ -31,7 +31,6 @@ public class CirclingMadnessExperiment extends Experiment {
     private static final int BACKGROUND_COLOUR = Color.DKGRAY;
     private static final float OFFSET_MULTIPLIER = 1.1f;
     private static final boolean LOOPY_MODE_ENABLED = false;
-    private Paint mPaint;
     private Animation mRotateAnimation;
     private RelativeLayout mLayout;
 
@@ -104,14 +103,5 @@ public class CirclingMadnessExperiment extends Experiment {
         final RectF rectF = new RectF(rect);
         paint.setColor(colour);
         canvas.drawOval(rectF, paint);
-    }
-
-    private Paint getPaint() {
-        if (mPaint != null) {
-            return mPaint;
-        }
-        mPaint = new Paint();
-        mPaint.setAntiAlias(true);
-        return mPaint;
     }
 }

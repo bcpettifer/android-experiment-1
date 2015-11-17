@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.codesandbox.android.experiment1.base.Experiment;
+import com.codesandbox.android.experiment1.base.ExperimentBase;
 import com.codesandbox.android.experiment1.experiments.BounceExperiment;
 import com.codesandbox.android.experiment1.experiments.CirclingMadnessExperiment;
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -18,7 +18,7 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Experiment experiment;
+    private ExperimentBase mExperiment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,15 +35,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (experiment == null) {
-                    experiment = new CirclingMadnessExperiment();
-                    Snackbar.make(view, "Starting experiment: " + experiment.getFriendlyName(), Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                    experiment.startExperimentFor(MainActivity.this, parent);
-                } else {
-                    experiment.killExperimentFor(parent);
-                    experiment = null;
-                }
+                handleExperimentSelection(new CirclingMadnessExperiment(), parent);
             }
         });
         fab.setSize(FloatingActionButton.SIZE_MINI);
@@ -53,15 +45,13 @@ public class MainActivity extends AppCompatActivity {
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                experiment = new BounceExperiment();
-                experiment.startExperimentFor(MainActivity.this, parent);
+                handleExperimentSelection(new BounceExperiment(), parent);
             }
         });
         fab2.setSize(FloatingActionButton.SIZE_MINI);
 
         menuMultipleActions.addButton(fab);
         menuMultipleActions.addButton(fab2);
-
     }
 
     @Override
@@ -85,5 +75,19 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void handleExperimentSelection(ExperimentBase experiment, ViewGroup parent) {
+        if (mExperiment == null) {
+            mExperiment = experiment;
+            Snackbar.make(parent, "Starting experiment: " + mExperiment.getFriendlyName(), Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+            mExperiment.startExperimentFor(MainActivity.this, parent);
+        } else {
+            Snackbar.make(parent, "Killing experiment: " + mExperiment.getFriendlyName(), Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+            mExperiment.killExperimentFor(parent);
+            mExperiment = null;
+        }
     }
 }
