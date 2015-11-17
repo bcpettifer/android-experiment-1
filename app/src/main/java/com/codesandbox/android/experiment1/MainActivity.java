@@ -1,7 +1,6 @@
 package com.codesandbox.android.experiment1;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,7 +10,10 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.codesandbox.android.experiment1.base.Experiment;
+import com.codesandbox.android.experiment1.experiments.BounceExperiment;
 import com.codesandbox.android.experiment1.experiments.CirclingMadnessExperiment;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,7 +26,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final FloatingActionsMenu menuMultipleActions = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
+
+        FloatingActionButton fab = new FloatingActionButton(getBaseContext());
+        fab.setIcon(R.drawable.ic_dialog_circle_of_madness);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -38,6 +43,21 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        fab.setSize(FloatingActionButton.SIZE_MINI);
+
+        FloatingActionButton fab2 = new FloatingActionButton(getBaseContext());
+        fab2.setIcon(R.drawable.ic_dialog_bounce);
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                experiment = new BounceExperiment();
+                experiment.startExperimentFor(MainActivity.this);
+            }
+        });
+        fab2.setSize(FloatingActionButton.SIZE_MINI);
+
+        menuMultipleActions.addButton(fab);
+        menuMultipleActions.addButton(fab2);
 
     }
 
