@@ -17,7 +17,6 @@ import android.widget.RelativeLayout;
 
 import com.codesandbox.android.experiment1.base.ExperimentBase;
 
-
 /**
  * "Insanity: doing the same thing over and over again and expecting different results." - Einstein
  * Created by jaminja on 01/11/2015.

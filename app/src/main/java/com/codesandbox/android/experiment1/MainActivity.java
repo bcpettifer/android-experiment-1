@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
                     .setAction("Action", null).show();
             mExperiment.killExperimentFor(parent);
             mExperiment = null;
+            handleExperimentSelection(experiment, parent);
         }
     }
 }

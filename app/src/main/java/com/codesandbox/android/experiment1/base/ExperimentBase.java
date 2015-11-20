@@ -5,7 +5,7 @@ import android.graphics.Paint;
 import android.view.ViewGroup;
 
 /**
- * Created by jaminja on 01/11/2015.
+ * Building block for creating new and fun experiments.
  */
 public abstract class ExperimentBase {
 
