@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:height="64dp"
-    android:width="64dp"
+    android:height="600dp"
+    android:width="600dp"
     android:viewportHeight="600"
     android:viewportWidth="600" >
+
     <path
         android:fillColor="#000000"
-        android:pathData="M300,300 l0,-300 l300,0 Z
-                          M300,300 l300,0 l0,300 Z
-                          M300,300 l0,300 l-300,0 Z
-                          M300,300 l-300,0 l0,-300 Z" />
+        android:pathData="M300,300 C150,150 150,150 300,0 l300,0 C300,150 300,150 300,300
+           M300,300 C450,150 450,150 600,300 l0,300 C450,300 450,300 300,300
+           M300,300 C450,450 450,450 300,600 l-300,0 C300,450 300,450 300,300
+           M300,300 C150,450 150,450 0,300 l0,-300 C150,300 150,300 300,300" />
+
 </vector>
