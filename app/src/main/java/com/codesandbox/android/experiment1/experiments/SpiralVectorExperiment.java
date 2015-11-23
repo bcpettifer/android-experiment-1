@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -26,8 +27,6 @@ public class SpiralVectorExperiment extends ExperimentBase {
             VectorDrawable vector = (VectorDrawable) context.getDrawable(R.drawable.spiral_vector);
             mView = new ImageView(context);
             mView.setImageDrawable(vector);
-            mView.setScaleX(2.0f);
-            mView.setScaleY(2.0f);
 
             mRotateAnimation = new RotateAnimation(0, 360.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
             mRotateAnimation.setDuration(3000);
@@ -35,7 +34,23 @@ public class SpiralVectorExperiment extends ExperimentBase {
             mRotateAnimation.setRepeatCount(Animation.INFINITE);
             mView.setAnimation(mRotateAnimation);
 
-            viewGroup.addView(mView);
+            int h = viewGroup.getHeight();
+            int w = viewGroup.getWidth();
+            int longestEdgeLength = Math.max(h, w);
+
+            FrameLayout layout = new FrameLayout(context);
+            layout.setClipToPadding(false);
+            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(longestEdgeLength, longestEdgeLength);
+            layout.setLayoutParams(layoutParams);
+
+            if (h > w) {
+                layout.setX((w-h)/2);
+            } else if (w > h) {
+                layout.setY((h-w)/2);
+            } // for the theoretical square device no translation necessary
+
+            layout.addView(mView);
+            viewGroup.addView(layout);
         } else {
             Toast.makeText(context, "Sorry, this experiment is not supported on your device.", Toast.LENGTH_SHORT).show();
         }
