@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         fab2.setSize(FloatingActionButton.SIZE_MINI);
 
         FloatingActionButton fab3 = new FloatingActionButton(getBaseContext());
-        // TODO: fab3.setIcon();
+        fab3.setIcon(R.drawable.ic_dialog_spiral);
         fab3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

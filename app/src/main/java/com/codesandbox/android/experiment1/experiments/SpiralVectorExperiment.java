@@ -36,18 +36,15 @@ public class SpiralVectorExperiment extends ExperimentBase {
 
             int h = viewGroup.getHeight();
             int w = viewGroup.getWidth();
-            int longestEdgeLength = Math.max(h, w);
+
+            int spiralEdgeLength = (int) Math.ceil(Math.hypot(h, w));
 
             FrameLayout layout = new FrameLayout(context);
             layout.setClipToPadding(false);
-            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(longestEdgeLength, longestEdgeLength);
+            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(spiralEdgeLength, spiralEdgeLength);
             layout.setLayoutParams(layoutParams);
-
-            if (h > w) {
-                layout.setX((w-h)/2);
-            } else if (w > h) {
-                layout.setY((h-w)/2);
-            } // for the theoretical square device no translation necessary
+            layout.setX((w - spiralEdgeLength) / 2);
+            layout.setY((h - spiralEdgeLength) / 2);
 
             layout.addView(mView);
             viewGroup.addView(layout);
@@ -61,5 +58,10 @@ public class SpiralVectorExperiment extends ExperimentBase {
         if (mView != null) {
             viewGroup.removeView(mView);
         }
+    }
+
+    @Override
+    public String getFriendlyName() {
+        return "Spiral Vector";
     }
 }
