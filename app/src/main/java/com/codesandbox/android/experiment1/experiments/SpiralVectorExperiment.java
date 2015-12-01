@@ -1,7 +1,12 @@
 package com.codesandbox.android.experiment1.experiments;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.graphics.drawable.VectorDrawable;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
@@ -16,12 +21,21 @@ import com.codesandbox.android.experiment1.base.ExperimentBase;
 /**
  * Simple spiral vector animation.
  */
-public class SpiralVectorExperiment extends ExperimentBase {
+public class SpiralVectorExperiment extends Fragment {
 
+    public static String TAG = "SPIRAL_FRAGMENT";
     private Animation mRotateAnimation;
     ImageView mView;
+    FrameLayout mLayout;
 
+    @Nullable
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        startExperimentFor(getActivity(), container);
+        return mLayout;
+    }
+
     public void startExperimentFor(Context context, ViewGroup viewGroup) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             VectorDrawable vector = (VectorDrawable) context.getDrawable(R.drawable.spiral_vector);
@@ -39,28 +53,20 @@ public class SpiralVectorExperiment extends ExperimentBase {
 
             int spiralEdgeLength = (int) Math.ceil(Math.hypot(h, w));
 
-            FrameLayout layout = new FrameLayout(context);
-            layout.setClipToPadding(false);
+            mLayout = new FrameLayout(context);
+            mLayout.setClipToPadding(false);
             FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(spiralEdgeLength, spiralEdgeLength);
-            layout.setLayoutParams(layoutParams);
-            layout.setX((w - spiralEdgeLength) / 2);
-            layout.setY((h - spiralEdgeLength) / 2);
+            mLayout.setLayoutParams(layoutParams);
+            mLayout.setX((w - spiralEdgeLength) / 2);
+            mLayout.setY((h - spiralEdgeLength) / 2);
 
-            layout.addView(mView);
-            viewGroup.addView(layout);
+            mLayout.addView(mView);
+
         } else {
             Toast.makeText(context, "Sorry, this experiment is not supported on your device.", Toast.LENGTH_SHORT).show();
         }
     }
 
-    @Override
-    public void killExperimentFor(ViewGroup viewGroup) {
-        if (mView != null) {
-            viewGroup.removeView(mView);
-        }
-    }
-
-    @Override
     public String getFriendlyName() {
         return "Spiral Vector";
     }

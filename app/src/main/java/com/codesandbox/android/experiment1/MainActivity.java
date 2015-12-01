@@ -1,12 +1,15 @@
 package com.codesandbox.android.experiment1;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
@@ -102,5 +105,24 @@ public class MainActivity extends AppCompatActivity {
             mExperiment = null;
             handleExperimentSelection(experiment, parent);
         }
+    }
+
+    private void handleExperimentSelection(SpiralVectorExperiment experiment, ViewGroup parent) {
+        FragmentManager fragmentManager = getFragmentManager();
+        Fragment f = fragmentManager.findFragmentByTag(SpiralVectorExperiment.TAG);
+        if (f == null) {
+            getFragmentManager().beginTransaction().add(R.id.fragment_container, experiment, SpiralVectorExperiment.TAG).commit();
+            Snackbar.make(parent, "Starting experiment: " + experiment.getFriendlyName(), Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        } else {
+            Snackbar.make(parent, "Killing experiment: " + experiment.getFriendlyName(), Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+            getFragmentManager().
+                    beginTransaction().
+                    remove(f).
+                    setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).
+                    commit();
+        }
+
     }
 }
