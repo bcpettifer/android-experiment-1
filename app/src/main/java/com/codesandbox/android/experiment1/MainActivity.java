@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void handleExperimentSelection(ExperimentBase experiment, ViewGroup parent) {
+    private void handleExperimentSelection(final ExperimentBase experiment, final ViewGroup parent) {
         if (mExperiment == null) {
             mExperiment = experiment;
             Snackbar.make(parent, "Starting experiment: " + mExperiment.getFriendlyName(), Snackbar.LENGTH_LONG)
@@ -103,7 +103,14 @@ public class MainActivity extends AppCompatActivity {
                     .setAction("Action", null).show();
             mExperiment.killExperimentFor(parent);
             mExperiment = null;
-            handleExperimentSelection(experiment, parent);
+            parent.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    handleExperimentSelection(experiment, parent);
+                }
+            },
+            1500);
+
         }
     }
 
@@ -120,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
             getFragmentManager().
                     beginTransaction().
                     remove(f).
-                    setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).
                     commit();
         }
 

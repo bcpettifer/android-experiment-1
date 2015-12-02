@@ -48,6 +48,8 @@ public class BounceExperiment extends ExperimentBase {
             R.color.bounce_white,
     };
 
+    private boolean isKillCommandActive = false;
+
     @Override
     public void startExperimentFor(final Context context, final ViewGroup viewGroup) {
         viewGroup.setBackgroundColor(ContextCompat.getColor(context, BACKGROUND_COLOR));
@@ -57,6 +59,9 @@ public class BounceExperiment extends ExperimentBase {
                     new Runnable() {
                         @Override
                         public void run() {
+                            if (isKillCommandActive) {
+                                return;
+                            }
                             final List<ImageView> views = createObjects(finalBatchIndex, context, viewGroup);
                             for (int starIndex = 0; starIndex < finalBatchIndex; starIndex++) {
                                 ImageView ball = views.get(starIndex);
@@ -74,7 +79,7 @@ public class BounceExperiment extends ExperimentBase {
 
     @Override
     public void killExperimentFor(ViewGroup viewGroup) {
-        // TODO: Kill experiment somehow.
+        isKillCommandActive = true;
     }
 
     @Override

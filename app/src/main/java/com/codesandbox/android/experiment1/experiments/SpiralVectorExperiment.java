@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.codesandbox.android.experiment1.R;
-import com.codesandbox.android.experiment1.base.ExperimentBase;
 
 /**
  * Simple spiral vector animation.
@@ -34,6 +33,12 @@ public class SpiralVectorExperiment extends Fragment {
 
         startExperimentFor(getActivity(), container);
         return mLayout;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mView.clearAnimation();
     }
 
     public void startExperimentFor(Context context, ViewGroup viewGroup) {
