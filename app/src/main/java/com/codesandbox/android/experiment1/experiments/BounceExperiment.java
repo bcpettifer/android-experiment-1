@@ -10,14 +10,18 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.BounceInterpolator;
 import android.widget.ImageView;
 
 import com.codesandbox.android.experiment1.R;
-import com.codesandbox.android.experiment1.base.ExperimentBase;
+import com.codesandbox.android.experiment1.base.ExperimentBaseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +31,7 @@ import java.util.Random;
  * Adapted from the Novoda Droidcon Booth bounce demo
  * https://github.com/novoda/droidcon-booth
  */
-public class BounceExperiment extends ExperimentBase {
+public class BounceExperiment extends ExperimentBaseFragment {
 
     public static final Random RANDOM = new Random();
 
@@ -49,6 +53,19 @@ public class BounceExperiment extends ExperimentBase {
     };
 
     private boolean isKillCommandActive = false;
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        startExperimentFor(getActivity(), container);
+        return null;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        isKillCommandActive = true;
+    }
 
     @Override
     public void startExperimentFor(final Context context, final ViewGroup viewGroup) {
@@ -74,12 +91,6 @@ public class BounceExperiment extends ExperimentBase {
                     , batchIndex * 500
             );
         }
-
-    }
-
-    @Override
-    public void killExperimentFor(ViewGroup viewGroup) {
-        isKillCommandActive = true;
     }
 
     @Override

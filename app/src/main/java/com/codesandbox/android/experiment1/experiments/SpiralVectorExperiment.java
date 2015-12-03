@@ -1,6 +1,5 @@
 package com.codesandbox.android.experiment1.experiments;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.graphics.drawable.VectorDrawable;
 import android.os.Bundle;
@@ -16,11 +15,12 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.codesandbox.android.experiment1.R;
+import com.codesandbox.android.experiment1.base.ExperimentBaseFragment;
 
 /**
  * Simple spiral vector animation.
  */
-public class SpiralVectorExperiment extends Fragment {
+public class SpiralVectorExperiment extends ExperimentBaseFragment {
 
     public static String TAG = "SPIRAL_FRAGMENT";
     private Animation mRotateAnimation;
@@ -30,7 +30,6 @@ public class SpiralVectorExperiment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         startExperimentFor(getActivity(), container);
         return mLayout;
     }
@@ -38,7 +37,9 @@ public class SpiralVectorExperiment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mView.clearAnimation();
+        if (mView != null) {
+            mView.clearAnimation();
+        }
     }
 
     public void startExperimentFor(Context context, ViewGroup viewGroup) {

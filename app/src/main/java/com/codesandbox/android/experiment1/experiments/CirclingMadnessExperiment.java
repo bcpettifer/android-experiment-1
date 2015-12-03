@@ -7,6 +7,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -15,13 +18,13 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.codesandbox.android.experiment1.base.ExperimentBase;
+import com.codesandbox.android.experiment1.base.ExperimentBaseFragment;
 
 /**
  * "Insanity: doing the same thing over and over again and expecting different results." - Einstein
  * Created by jaminja on 01/11/2015.
  */
-public class CirclingMadnessExperiment extends ExperimentBase {
+public class CirclingMadnessExperiment extends ExperimentBaseFragment {
     private static final int CIRCLES_COUNT = 13;
     private static final int[] COLOURS = {
             Color.BLACK,
@@ -36,6 +39,13 @@ public class CirclingMadnessExperiment extends ExperimentBase {
     @Override
     public String getFriendlyName() {
         return "Circling Madness";
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        startExperimentFor(getActivity(), container);
+        return mLayout;
     }
 
     @Override
@@ -54,18 +64,13 @@ public class CirclingMadnessExperiment extends ExperimentBase {
         mRotateAnimation.setInterpolator(new LinearInterpolator());
         mRotateAnimation.setRepeatCount(Animation.INFINITE);
         mLayout.setAnimation(mRotateAnimation);
-
-        viewGroup.addView(mLayout);
     }
 
     @Override
-    public void killExperimentFor(ViewGroup viewGroup) {
-        if (mRotateAnimation != null) {
-            mRotateAnimation.cancel();
-        }
+    public void onDestroyView() {
+        super.onDestroyView();
         if (mLayout != null) {
-            mLayout.removeAllViews();
-            viewGroup.removeView(mLayout);
+            mLayout.clearAnimation();
         }
     }
 
