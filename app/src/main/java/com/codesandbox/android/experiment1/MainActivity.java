@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.codesandbox.android.experiment1.base.ExperimentBaseFragment;
 import com.codesandbox.android.experiment1.experiments.BounceExperiment;
 import com.codesandbox.android.experiment1.experiments.CirclingMadnessExperiment;
+import com.codesandbox.android.experiment1.experiments.MystifyExperiment;
 import com.codesandbox.android.experiment1.experiments.SpiralVectorExperiment;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
             Snackbar.make(parent, "Starting experiment: " + experiment.getFriendlyName(), Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         } else {
-            Snackbar.make(parent, "Killing experiment: " + experiment.getFriendlyName(), Snackbar.LENGTH_LONG)
+            Snackbar.make(parent, "Killing running experiment", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
             getFragmentManager().
                     beginTransaction().

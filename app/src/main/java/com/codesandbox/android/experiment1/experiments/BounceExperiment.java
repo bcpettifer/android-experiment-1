@@ -67,7 +67,6 @@ public class BounceExperiment extends ExperimentBaseFragment {
         isKillCommandActive = true;
     }
 
-    @Override
     public void startExperimentFor(final Context context, final ViewGroup viewGroup) {
         viewGroup.setBackgroundColor(ContextCompat.getColor(context, BACKGROUND_COLOR));
         for (int batchIndex = 0; batchIndex < 20; batchIndex++) {

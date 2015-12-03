@@ -12,8 +12,6 @@ public abstract class ExperimentBaseFragment extends Fragment {
 
     private Paint mPaint;
 
-    public abstract void startExperimentFor(Context context, ViewGroup viewGroup);
-
     public String getFriendlyName() {
         return "Generic Experiment";
     }

@@ -48,7 +48,6 @@ public class CirclingMadnessExperiment extends ExperimentBaseFragment {
         return mLayout;
     }
 
-    @Override
     public void startExperimentFor(Context context, ViewGroup viewGroup) {
 
         viewGroup.setBackgroundColor(BACKGROUND_COLOUR);
