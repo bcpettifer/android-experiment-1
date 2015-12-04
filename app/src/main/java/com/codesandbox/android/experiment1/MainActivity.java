@@ -62,9 +62,20 @@ public class MainActivity extends AppCompatActivity {
         });
         fab3.setSize(FloatingActionButton.SIZE_MINI);
 
+        FloatingActionButton fab4 = new FloatingActionButton(getBaseContext());
+        // TODO: fab4.setIcon(R.drawable.ic_dialog_mystify);
+        fab4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleExperimentSelection(new MystifyExperiment(), parent);
+            }
+        });
+        fab4.setSize(FloatingActionButton.SIZE_MINI);
+
         menuMultipleActions.addButton(fab);
         menuMultipleActions.addButton(fab2);
         menuMultipleActions.addButton(fab3);
+        menuMultipleActions.addButton(fab4);
     }
 
     @Override
