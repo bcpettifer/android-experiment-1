@@ -31,51 +31,11 @@ public class MainActivity extends AppCompatActivity {
         final ViewGroup parent = (ViewGroup) this.findViewById(android.R.id.content);
 
         final FloatingActionsMenu menuMultipleActions = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
+        addExperimentButton(menuMultipleActions, parent, new CirclingMadnessExperiment(), R.drawable.ic_dialog_circle_of_madness);
+        addExperimentButton(menuMultipleActions, parent, new BounceExperiment(), R.drawable.ic_dialog_bounce);
+        addExperimentButton(menuMultipleActions, parent, new SpiralVectorExperiment(), R.drawable.ic_dialog_spiral);
+        addExperimentButton(menuMultipleActions, parent, new MystifyExperiment(), R.drawable.ic_dialog_mystify);
 
-        FloatingActionButton fab = new FloatingActionButton(getBaseContext());
-        fab.setIcon(R.drawable.ic_dialog_circle_of_madness);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                handleExperimentSelection(new CirclingMadnessExperiment(), parent);
-            }
-        });
-        fab.setSize(FloatingActionButton.SIZE_MINI);
-
-        FloatingActionButton fab2 = new FloatingActionButton(getBaseContext());
-        fab2.setIcon(R.drawable.ic_dialog_bounce);
-        fab2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                handleExperimentSelection(new BounceExperiment(), parent);
-            }
-        });
-        fab2.setSize(FloatingActionButton.SIZE_MINI);
-
-        FloatingActionButton fab3 = new FloatingActionButton(getBaseContext());
-        fab3.setIcon(R.drawable.ic_dialog_spiral);
-        fab3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleExperimentSelection(new SpiralVectorExperiment(), parent);
-            }
-        });
-        fab3.setSize(FloatingActionButton.SIZE_MINI);
-
-        FloatingActionButton fab4 = new FloatingActionButton(getBaseContext());
-        // TODO: fab4.setIcon(R.drawable.ic_dialog_mystify);
-        fab4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleExperimentSelection(new MystifyExperiment(), parent);
-            }
-        });
-        fab4.setSize(FloatingActionButton.SIZE_MINI);
-
-        menuMultipleActions.addButton(fab);
-        menuMultipleActions.addButton(fab2);
-        menuMultipleActions.addButton(fab3);
-        menuMultipleActions.addButton(fab4);
     }
 
     @Override
@@ -101,11 +61,25 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void addExperimentButton(final FloatingActionsMenu menu, final ViewGroup parent, final ExperimentBaseFragment experiment, int icon) {
+        FloatingActionButton fab = new FloatingActionButton(getBaseContext());
+        fab.setIcon(icon);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handleExperimentSelection(experiment, parent);
+                menu.collapse();
+            }
+        });
+        fab.setSize(FloatingActionButton.SIZE_MINI);
+        menu.addButton(fab);
+    }
+
     private void handleExperimentSelection(final ExperimentBaseFragment experiment, final ViewGroup parent) {
         FragmentManager fragmentManager = getFragmentManager();
-        Fragment f = fragmentManager.findFragmentByTag(SpiralVectorExperiment.TAG);
+        Fragment f = fragmentManager.findFragmentByTag(ExperimentBaseFragment.TAG);
         if (f == null) {
-            getFragmentManager().beginTransaction().add(R.id.fragment_container, experiment, SpiralVectorExperiment.TAG).commit();
+            getFragmentManager().beginTransaction().add(R.id.fragment_container, experiment, ExperimentBaseFragment.TAG).commit();
             Snackbar.make(parent, "Starting experiment: " + experiment.getFriendlyName(), Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         } else {

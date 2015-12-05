@@ -10,6 +10,8 @@ import android.view.ViewGroup;
  */
 public abstract class ExperimentBaseFragment extends Fragment {
 
+    public static String TAG = "EXPERIMENT_FRAGMENT";
+
     private Paint mPaint;
 
     public String getFriendlyName() {

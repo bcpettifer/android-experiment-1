@@ -52,11 +52,12 @@ public class BounceExperiment extends ExperimentBaseFragment {
             R.color.bounce_white,
     };
 
-    private boolean isKillCommandActive = false;
+    private boolean isKillCommandActive;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        isKillCommandActive = false;
         startExperimentFor(getActivity(), container);
         return null;
     }

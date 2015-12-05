@@ -22,7 +22,6 @@ import com.codesandbox.android.experiment1.base.ExperimentBaseFragment;
  */
 public class SpiralVectorExperiment extends ExperimentBaseFragment {
 
-    public static String TAG = "SPIRAL_FRAGMENT";
     private Animation mRotateAnimation;
     ImageView mView;
     FrameLayout mLayout;
