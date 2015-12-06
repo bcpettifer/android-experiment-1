@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.codesandbox.android.experiment1.R;
 import com.codesandbox.android.experiment1.base.ExperimentBaseFragment;
 
 /**
@@ -85,6 +86,11 @@ public class MystifyExperiment extends ExperimentBaseFragment {
     @Override
     public String getFriendlyName() {
         return "Mystify";
+    }
+
+    @Override
+    public int getIcon() {
+        return R.drawable.ic_dialog_mystify;
     }
 
     private int darkenColour(int colour, float factor) {

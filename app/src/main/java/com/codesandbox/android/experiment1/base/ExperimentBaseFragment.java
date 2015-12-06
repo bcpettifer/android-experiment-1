@@ -1,9 +1,7 @@
 package com.codesandbox.android.experiment1.base;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.graphics.Paint;
-import android.view.ViewGroup;
 
 /**
  * Building block for creating new and fun experiments.
@@ -17,6 +15,8 @@ public abstract class ExperimentBaseFragment extends Fragment {
     public String getFriendlyName() {
         return "Generic Experiment";
     }
+
+    public abstract int getIcon();
 
     protected Paint getPaint() {
         if (mPaint != null) {

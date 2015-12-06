@@ -31,11 +31,11 @@ public class MainActivity extends AppCompatActivity {
         final ViewGroup parent = (ViewGroup) this.findViewById(android.R.id.content);
 
         final FloatingActionsMenu menuMultipleActions = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
-        addExperimentButton(menuMultipleActions, parent, new CirclingMadnessExperiment(), R.drawable.ic_dialog_circle_of_madness);
-        addExperimentButton(menuMultipleActions, parent, new BounceExperiment(), R.drawable.ic_dialog_bounce);
-        addExperimentButton(menuMultipleActions, parent, new SpiralVectorExperiment(), R.drawable.ic_dialog_spiral);
-        addExperimentButton(menuMultipleActions, parent, new MystifyExperiment(), R.drawable.ic_dialog_mystify);
-
+        addExperimentButtons(menuMultipleActions, parent,
+                new CirclingMadnessExperiment(),
+                new BounceExperiment(),
+                new SpiralVectorExperiment(),
+                new MystifyExperiment());
     }
 
     @Override
@@ -61,9 +61,15 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void addExperimentButton(final FloatingActionsMenu menu, final ViewGroup parent, final ExperimentBaseFragment experiment, int icon) {
+    private void addExperimentButtons(final FloatingActionsMenu menu, final ViewGroup parent, final ExperimentBaseFragment... experiments) {
+        for (ExperimentBaseFragment experiment : experiments) {
+            addExperimentButton(menu, parent, experiment);
+        }
+    }
+
+    private void addExperimentButton(final FloatingActionsMenu menu, final ViewGroup parent, final ExperimentBaseFragment experiment) {
         FloatingActionButton fab = new FloatingActionButton(getBaseContext());
-        fab.setIcon(icon);
+        fab.setIcon(experiment.getIcon());
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

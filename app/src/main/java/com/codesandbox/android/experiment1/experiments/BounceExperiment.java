@@ -98,6 +98,11 @@ public class BounceExperiment extends ExperimentBaseFragment {
         return "Bounce";
     }
 
+    @Override
+    public int getIcon() {
+        return R.drawable.ic_dialog_bounce;
+    }
+
     private List<ImageView> createObjects(int count, final Context context, final ViewGroup parent) {
         ArrayList<ImageView> objects = new ArrayList<>(count);
 

@@ -75,4 +75,9 @@ public class SpiralVectorExperiment extends ExperimentBaseFragment {
     public String getFriendlyName() {
         return "Spiral Vector";
     }
+
+    @Override
+    public int getIcon() {
+        return R.drawable.ic_dialog_spiral;
+    }
 }

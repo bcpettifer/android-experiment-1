@@ -18,6 +18,7 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.codesandbox.android.experiment1.R;
 import com.codesandbox.android.experiment1.base.ExperimentBaseFragment;
 
 /**
@@ -39,6 +40,11 @@ public class CirclingMadnessExperiment extends ExperimentBaseFragment {
     @Override
     public String getFriendlyName() {
         return "Circling Madness";
+    }
+
+    @Override
+    public int getIcon() {
+        return R.drawable.ic_dialog_circle_of_madness;
     }
 
     @Nullable
