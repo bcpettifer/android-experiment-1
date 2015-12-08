@@ -1,5 +1,6 @@
 package com.codesandbox.android.experiment1;
 
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
@@ -57,6 +58,10 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "All your settings are belong to us!", Toast.LENGTH_SHORT).show();
             return true;
         }
+        if (id == R.id.action_stop) {
+            stopExperiment();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -81,26 +86,38 @@ public class MainActivity extends AppCompatActivity {
         menu.addButton(fab);
     }
 
-    private void handleExperimentSelection(final ExperimentBaseFragment experiment, final ViewGroup parent) {
+    private void handleExperimentSelection(final ExperimentBaseFragment experiment, final View view) {
         FragmentManager fragmentManager = getFragmentManager();
         Fragment f = fragmentManager.findFragmentByTag(ExperimentBaseFragment.TAG);
         if (f == null) {
-            getFragmentManager().beginTransaction().add(R.id.fragment_container, experiment, ExperimentBaseFragment.TAG).commit();
-            Snackbar.make(parent, "Starting experiment: " + experiment.getFriendlyName(), Snackbar.LENGTH_LONG)
+            fragmentManager.beginTransaction().add(R.id.fragment_container, experiment, ExperimentBaseFragment.TAG).commit();
+            Snackbar.make(view, "Starting experiment: " + experiment.getFriendlyName(), Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         } else {
-            Snackbar.make(parent, "Killing running experiment", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-            getFragmentManager().
-                    beginTransaction().
-                    remove(f).
-                    commit();
-            parent.postDelayed(new Runnable() {
+            stopExperiment(fragmentManager, f, view);
+            view.postDelayed(new Runnable() {
                @Override
                public void run() {
-                   handleExperimentSelection(experiment, parent);
+                   handleExperimentSelection(experiment, view);
                }
             }, 1500);
         }
+    }
+
+    private void stopExperiment() {
+        FragmentManager fragmentManager = getFragmentManager();
+        Fragment f = fragmentManager.findFragmentByTag(ExperimentBaseFragment.TAG);
+        if (f != null) {
+            stopExperiment(fragmentManager, f, findViewById(R.id.fragment_container));
+        }
+    }
+
+    private void stopExperiment(final FragmentManager fragmentManager, final Fragment fragment, final View view) {
+        Snackbar.make(view, "Killing running experiment", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+        fragmentManager.
+                beginTransaction().
+                remove(fragment).
+                commit();
     }
 }
