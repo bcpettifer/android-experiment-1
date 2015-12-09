@@ -1,8 +1,9 @@
 package com.codesandbox.android.experiment1;
 
-import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,8 @@ import com.codesandbox.android.experiment1.experiments.MystifyExperiment;
 import com.codesandbox.android.experiment1.experiments.SpiralVectorExperiment;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+
+import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,6 +63,32 @@ public class MainActivity extends AppCompatActivity {
         }
         if (id == R.id.action_stop) {
             stopExperiment();
+            return true;
+        }
+        if (id == R.id.action_bg_colour) {
+            final View container = findViewById(R.id.fragment_container);
+            int initialColour = Color.WHITE;
+            if (container.getBackground() instanceof ColorDrawable) {
+                initialColour = ((ColorDrawable)container.getBackground()).getColor();
+            }
+
+            AmbilWarnaDialog dialog = new AmbilWarnaDialog(
+                    this,
+                    initialColour,
+                    new AmbilWarnaDialog.OnAmbilWarnaListener() {
+                        @Override
+                        public void onOk(AmbilWarnaDialog dialog, int color) {
+                            // color is the color selected by the user.
+                            container.setBackgroundColor(color);
+                        }
+
+                        @Override
+                        public void onCancel(AmbilWarnaDialog dialog) {
+                            // cancel was selected by the user
+                        }
+                    });
+
+            dialog.show();
             return true;
         }
 

@@ -16,4 +16,10 @@
         android:orderInCategory="101"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/action_bg_colour"
+        android:title="@string/action_bg_colour"
+        android:orderInCategory="102"
+        app:showAsAction="never" />
+
 </menu>
