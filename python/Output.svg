@@ -1,0 +1,10 @@
+<?xml version="1.0" standalone="no"?>
+<svg width="100px" height="100px" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M50.0 50.0 L0 50.0 L50.0 0 Z"/>
+<!-- debug points -->
+  <circle cx="0" cy="0" r="2" fill="red"/>
+  <circle cx="0" cy="100" r="2" fill="red"/>
+  <circle cx="100" cy="0" r="2" fill="red"/>
+  <circle cx="100" cy="100" r="2" fill="red"/>
+  <circle cx="50.0" cy="50.0" r="2" fill="red"/>
+</svg>
