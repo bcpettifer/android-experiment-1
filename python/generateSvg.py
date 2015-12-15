@@ -1,3 +1,5 @@
+import math
+
 # Simple Point class
 class Point:
   def __init__(self, x, y):
@@ -23,19 +25,42 @@ class SvgGenerator:
   def __init__ (self):
     
     self.size = 100 # 100px
-    self.segmentCount = 4
+    self.segmentCount = 6
     self.midPoint = Point(self.size / 2, self.size / 2)
 
 
   def createPath(self):
     
-    path = '  <path d="M{0} {1} L0 {2} L{2} 0 Z"/>'.format(self.midPoint.x, self.midPoint.y, self.size / 2)
+    lineLength = self.size / 2
+    path = '  <path d="M{0} {1} L0 {2} L{2} 0 Z"/>'.format(self.midPoint.x, self.midPoint.y, lineLength)
+
+    a = 0
+    delta = 360 / self.segmentCount
+    
+    while a < 360:
+
+      x1 = self.midPoint.x + lineLength * math.cos(math.radians(a))
+      y1 = self.midPoint.y + lineLength * math.sin(math.radians(a))
+      p1 = Point(x1, y1)
+
+      path += '\n' + self.createColourPoint(p1, 'green')
+
+      a += delta
+
+
+
+    
     return path
 
 
   def createPoint(self, point):
     
-    return '  <circle cx="{0}" cy="{1}" r="2" fill="red"/>'.format(point.x, point.y)
+    return self.createColourPoint(point, 'red')
+
+
+  def createColourPoint(self, point, colour):
+    
+    return '  <circle cx="{0}" cy="{1}" r="2" fill="{2}"/>'.format(point.x, point.y, colour)
 
 
   def debugPoints(self):
