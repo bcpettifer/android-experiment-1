@@ -27,29 +27,42 @@ class SvgGenerator:
     self.size = 100 # 100px
     self.segmentCount = 6
     self.midPoint = Point(self.size / 2, self.size / 2)
+    self.debug = True
+
+    if self.segmentCount % 2 != 0:
+      print('WARN: Odd number of segments chosen; Output might be.... strange :/\n')
 
 
   def createPath(self):
     
     lineLength = self.size / 2
-    path = '  <path d="M{0} {1} L0 {2} L{2} 0 Z"/>'.format(self.midPoint.x, self.midPoint.y, lineLength)
-
     a = 0
     delta = 360 / self.segmentCount
+
+    points = []
     
     while a < 360:
-
       x1 = self.midPoint.x + lineLength * math.cos(math.radians(a))
       y1 = self.midPoint.y + lineLength * math.sin(math.radians(a))
       p1 = Point(x1, y1)
-
-      path += '\n' + self.createColourPoint(p1, 'green')
-
+      points.append(p1)
       a += delta
-
-
-
     
+    pathData = ''
+
+    for i in range(0, len(points), 2):
+      if i + 1 >= len(points):
+        break
+
+      pathData += 'M{0} {1} L{2} {3} L{4} {5} Z '.format(self.midPoint.x, self.midPoint.y,
+        points[i].x, points[i].y, points[i+1].x, points[i+1].y)
+
+    path = '  <path d="{0}"/>'.format(pathData)
+
+    if self.debug:
+      for p in points:
+        path += '\n' + self.createColourPoint(p, 'green')
+
     return path
 
 
@@ -65,6 +78,8 @@ class SvgGenerator:
 
   def debugPoints(self):
     
+    if not self.debug:
+      return ''
     points = ('  <!-- debug points -->',
               self.createPoint(Point(0, 0)),
               self.createPoint(Point(0, self.size)),
