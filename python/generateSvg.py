@@ -1,4 +1,4 @@
-import math
+import math, argparse
 
 # Simple Point class
 class Point:
@@ -26,8 +26,24 @@ class SvgGenerator:
     
     self.size = 100 # 100px
     self.segmentCount = 6
+    self.debug = False
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-d", "--debug",
+                    help="add debug values to the output",
+                    action='store_true')
+    parser.add_argument("-s", "--segmentCount", type=int,
+                    help="number of segments in the generated shape")
+    args = parser.parse_args()
+
+    if args.debug:
+      print('debug: ', args.debug)
+      self.debug = args.debug
+    if args.segmentCount:
+      print('segmentCount: ', args.segmentCount)
+      self.segmentCount = args.segmentCount
+
     self.midPoint = Point(self.size / 2, self.size / 2)
-    self.debug = True
 
     if self.segmentCount % 2 != 0:
       print('WARN: Odd number of segments chosen; Output might be.... strange :/\n')
