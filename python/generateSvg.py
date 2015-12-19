@@ -27,6 +27,7 @@ class SvgGenerator:
     self.size = 100 # 100px
     self.segmentCount = 6
     self.debug = False
+    self.outputFile = "Output.svg"
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--debug",
@@ -34,6 +35,8 @@ class SvgGenerator:
                     action='store_true')
     parser.add_argument("-s", "--segmentCount", type=int,
                     help="number of segments in the generated shape")
+    parser.add_argument("-o", "--outputFile", type=str,
+                    help="output file")
     args = parser.parse_args()
 
     if args.debug:
@@ -42,6 +45,8 @@ class SvgGenerator:
     if args.segmentCount:
       print('segmentCount: ', args.segmentCount)
       self.segmentCount = args.segmentCount
+    if args.outputFile:
+      self.outputFile = args.outputFile
 
     self.midPoint = Point(self.size / 2, self.size / 2)
 
@@ -107,16 +112,25 @@ class SvgGenerator:
 
   def createSvg(self):
     
-    return '\n'.join(('<?xml version="1.0" standalone="no"?>',
+    svg = '\n'.join(('<?xml version="1.0" standalone="no"?>',
       '<svg width="{0}px" height="{0}px" version="1.1" xmlns="http://www.w3.org/2000/svg">'.format(self.size),
       self.createPath(),
       self.debugPoints(),
       '</svg>'))
+    if self.debug:
+      print(svg)
+    return svg
+
+
+  def createSvgFile(self):
+
+    text_file = open(self.outputFile, "w")
+    text_file.write(svggen.createSvg())
+    text_file.close()
+    if self.debug:
+      print("File created: ", self.outputFile)
 
 
 # Run the svg generator and save the results to file
 svggen = SvgGenerator()
-print(svggen.createSvg())
-text_file = open("Output.svg", "w")
-text_file.write(svggen.createSvg())
-text_file.close()
+svggen.createSvgFile()
