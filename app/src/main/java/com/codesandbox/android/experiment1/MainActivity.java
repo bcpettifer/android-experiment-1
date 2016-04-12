@@ -26,6 +26,8 @@ import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class MainActivity extends AppCompatActivity {
 
+    FloatingActionsMenu mFloatingActionsMenu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         final ViewGroup parent = (ViewGroup) this.findViewById(android.R.id.content);
 
-        final FloatingActionsMenu menuMultipleActions = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
-        addExperimentButtons(menuMultipleActions, parent,
+        mFloatingActionsMenu = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
+        addExperimentButtons(mFloatingActionsMenu, parent,
                 new CirclingMadnessExperiment(),
                 new BounceExperiment(),
                 new SpiralVectorExperiment(),
@@ -120,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         Fragment f = fragmentManager.findFragmentByTag(ExperimentBaseFragment.TAG);
         if (f == null) {
             fragmentManager.beginTransaction().add(R.id.fragment_container, experiment, ExperimentBaseFragment.TAG).commit();
-            Snackbar.make(view, "Starting experiment: " + experiment.getFriendlyName(), Snackbar.LENGTH_LONG)
+            Snackbar.make(mFloatingActionsMenu, "Starting experiment: " + experiment.getFriendlyName(), Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         } else {
             stopExperiment(fragmentManager, f, view);
@@ -142,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void stopExperiment(final FragmentManager fragmentManager, final Fragment fragment, final View view) {
-        Snackbar.make(view, "Killing running experiment", Snackbar.LENGTH_LONG)
+        Snackbar.make(mFloatingActionsMenu, "Killing running experiment", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
         fragmentManager.
                 beginTransaction().
